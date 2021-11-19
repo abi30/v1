@@ -49,7 +49,7 @@ class Task{
     }
     public function setTitle($title){
         if(strlen($title)<0|| strlen($title)>255){
-            throw new TaskException("Task title error !");
+            throw new TaskException("Task title error!");
             
         }
         $this->_title=$title;
