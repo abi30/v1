@@ -103,17 +103,33 @@ if (array_key_exists("taskid",$_GET)) {
         $query->bindParam(':taskid',$taskid , PDO:: PARAM_INT);
         $query->execute();
 
+        $rowCount=$query->rowCount();
+        //$rowCount =$query->fetchColumn(); 
+
         if($rowCount===0){
             $response=new Response();
             $response->setHttpStatusCode(404);
             $response->setSuccess(false);
             $response->addMessage("Task not found!");
             $response->send();
-            exit();
-
+            exit;
         }
+
+        $response = new Response();
+        $response->setHttpStatusCode(200);
+        $response->setSuccess(true);
+        $response->addMessage("Task deleted");
+        $response->send();
+        exit;
     
         } catch (PDOException $ex) {
+            error_log("Database query error - ".$ex,0);
+            $response=new Response();
+            $response->setHttpStatusCode(500);
+            $response->setSuccess(false);
+            $response->addMessage("Failed to delete Task!");
+            $response->send();
+            exit;
             
         }
 
